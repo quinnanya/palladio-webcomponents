@@ -130,13 +130,6 @@ window.customElements.define(
             destinationCoordinatesKey,
           } = layer.mapping;
 
-          const tooltipText = (points) =>
-            "• " +
-            points
-              .map((point) => point[layer.descriptiveDimKey])
-              .join("<br>• ") +
-            `<br> [${points.length} record${points.length > 1 ? "s" : ""}]`;
-
           // create a pointsMap to group points by location
           let pointsMap = this.rows
             .filter((row) => row[sourceCoordinatesKey])
@@ -194,10 +187,19 @@ window.customElements.define(
                 weight: 2,
                 smoothFactor: 1,
               })
-                .bindTooltip(tooltipText(points), {
-                  className: "map-tooltip",
-                  direction: "top",
-                })
+                .bindTooltip(
+                  "• " +
+                    points
+                      .map((point) => point[layer.descriptiveDimKey])
+                      .join("<br>• ") +
+                    `<br> [${points.length} record${
+                      points.length > 1 ? "s" : ""
+                    }]`,
+                  {
+                    className: "map-tooltip",
+                    direction: "top",
+                  },
+                )
                 .addTo(this.map);
             });
           }
@@ -233,10 +235,16 @@ window.customElements.define(
                 ? scale(getAggregatedValue(points))
                 : minPointSize,
             })
-              .bindTooltip(tooltipText(points), {
-                className: "map-tooltip",
-                direction: "top",
-              })
+              .bindTooltip(
+                "• " +
+                  points
+                    .map((point) => point[layer.descriptiveDimKey])
+                    .join("<br>• ") +
+                  `<br> [${points.length} record${
+                    points.length > 1 ? "s" : ""
+                  }]`,
+                { className: "map-tooltip", direction: "top" },
+              )
               .addTo(this.map);
           });
         });
